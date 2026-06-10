@@ -1,0 +1,7 @@
+CREATE NEW TABLE EVENTS (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_name TEXT NOT NULL,
+    level TEXT NOT NULL,
+    message TEXT NOT NULL,
+    timestamp TEXT NOT NULL
+);
