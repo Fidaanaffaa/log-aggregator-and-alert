@@ -1,13 +1,10 @@
 from fastapi import FastAPI
 from sqlmodel import create_engine
+from sqlmodel import Session
+from Data.database import get_session
 from Data.Repo.logs import logs
 app = FastAPI()
-
-postgres_file_name = "LumberYard.db"
-postgres_url = f"postgresql://user:password@localhost/{postgres_file_name}"
-
-connect_args = {"check_same_thread": False}
-engine = create_engine(postgres_url, connect_args=connect_args)
+session = next(get_session())
 
 @app.get("/")
 async def root():
@@ -15,7 +12,13 @@ async def root():
 
 @app.post("/create_log")
 async def create_log(log: dict):
-    logg = logs()
+    logg = logs(session)
     print(log)
     result = await logg.create_log(log)
+    return result
+
+@app.get("/logs")
+async def get_logs():
+    logg = logs(session)
+    result = await logg.get_logs()
     return result
